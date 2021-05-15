@@ -21,24 +21,44 @@
         }
         .left {
             float: left;
-            transform: translateX(-40%);
+            transform: translateX(-40%) scale(0.9);
+            transition-duration: 2s;
         }
         .right {
             float: right;
+            transform: translateX(40%) scale(0.9);
+            transition-duration: 2s;
         }
         .para {
             margin: 20px 0px;
         }
         .slide {
             padding: 10px;
+            opacity: 0;
         }
         .active {
-            transform: ;
+            transform: translateX(0) scale(1);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
     <div id="app">
+        <p class="para">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a orci id tellus commodo porttitor. Phasellus rutrum iaculis ligula, 
+            eget cursus diam ullamcorper id. Vestibulum tellus erat, volutpat vel sapien id, fringilla elementum orci. Integer at nibh quis 
+            ipsum malesuada viverra. Integer laoreet, leo a fringilla blandit, diam purus viverra elit, at sollicitudin quam erat a libero. 
+            Sed pulvinar diam dignissim nulla eleifend iaculis. Pellentesque malesuada felis sit amet massa tristique bibendum. Donec sed orci 
+            pretium, consectetur arcu vitae, commodo leo. Morbi ac orci vel nisi mattis faucibus. Morbi at erat eu eros placerat ultricies at 
+            vel quam. Nunc quis lobortis dui, sit amet fringilla massa. Praesent a ante at lacus dapibus consequat. Morbi vestibulum sem dui, 
+            at pellentesque purus malesuada a. Sed dui justo, volutpat a maximus et, tempus sit amet dolor. Donec turpis leo, volutpat sit amet 
+            nunc eget, consectetur euismod nisi. Donec volutpat rutrum suscipit.</p>
+        <p class="para">Ut gravida ullamcorper tortor at malesuada. Morbi ut neque sodales nisl ornare bibendum. Nunc eleifend, est eget efficitur auctor, 
+            nisl urna vehicula est, id cursus risus nisi a urna. Morbi tortor ipsum, posuere eu arcu egestas, condimentum sagittis velit. Orci 
+            varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus rutrum nisl vitae egestas tempus. 
+            Morbi aliquet gravida finibus. Sed aliquet tristique massa, a efficitur urna suscipit sed. Pellentesque euismod lobortis sollicitudin. 
+            Vestibulum id finibus elit. Phasellus egestas, mauris ut aliquet aliquam, lacus purus lobortis quam, nec eleifend leo sem in nibh. Ut 
+            finibus velit nisi, ut accumsan eros accumsan et. Duis quis mauris nec magna tincidunt eleifend in quis diam. In hendrerit sem vel 
+            sem gravida, ac rutrum leo pulvinar. Aliquam vitae semper dui, at malesuada sem.</p>  
         <p class="para">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a orci id tellus commodo porttitor. Phasellus rutrum iaculis ligula, 
             eget cursus diam ullamcorper id. Vestibulum tellus erat, <img class="slide left" width="400px" height="400px" src="imageone.jpg">volutpat vel sapien id, fringilla elementum orci. Integer at nibh quis 
             ipsum malesuada viverra. Integer laoreet, leo a fringilla blandit, diam purus viverra elit, at sollicitudin quam erat a libero. 
@@ -77,5 +97,46 @@
              scelerisque ut. Proin condimentum tortor in leo ultrices lacinia. Vestibulum turpis augue, aliquam nec pellentesque pharetra, 
              porttitor sed orci. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>   
     </div>
+
+    <script>
+        const slideImages = document.querySelectorAll('.slide');
+        window.addEventListener('scroll', debounce(sliding));
+
+        function sliding(e) {
+            slideImages.forEach(slideImage => {
+                const slideInAt = (window.scrollY + window.innerHeight) - slideImage.height/2;
+                const imageBottom = slideImage.offsetTop + slideImage.height;
+                const isHalfWay = slideInAt > slideImage.offsetTop;
+                const isNotScrolled = window.scrollY < imageBottom;
+                
+                if (isHalfWay && isNotScrolled) {
+                    slideImage.classList.add('active');
+                } else {
+                    slideImage.classList.remove('active');
+                }
+            })
+
+            
+        }
+
+        function debounce(func, wait=20, immediate = true) {
+            var timeout;
+            return function executedFunction() {
+                var context = this;
+                var args = arguments;
+                var later = function() {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        };
+
+        
+    </script>
 </body>
 </html>
